@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public float horizontalInput,forwardInput;
     public float speed,xRange,zRange;
+    public GameObject projectilePrefab;
     void Start()
     {
         
@@ -18,6 +17,7 @@ public class PlayerController : MonoBehaviour
         transform.Translate(Vector3.right * speed * Time.deltaTime * horizontalInput);
         forwardInput = Input.GetAxis("Vertical");
         transform.Translate(Vector3.forward * speed * Time.deltaTime * forwardInput);
+        //Keep player in bounds
         if (transform.position.x < -xRange)
         {
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
@@ -34,6 +34,10 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, -zRange);
         }
-
+        //Throw food
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(projectilePrefab, transform.position,projectilePrefab.transform.rotation);
+        }
     }
 }
